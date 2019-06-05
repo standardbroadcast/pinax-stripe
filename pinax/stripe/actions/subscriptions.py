@@ -47,7 +47,9 @@ def create(customer, plan, quantity=None, trial_days=None, token=None, coupon=No
     quantity = hooks.hookset.adjust_subscription_quantity(customer=customer, plan=plan, quantity=quantity)
 
     subscription_params = {}
-    if trial_days:
+    if trial_days == 'now':
+        subscription_params["trial_end"] = 'now'
+    elif trial_days:
         subscription_params["trial_end"] = datetime.datetime.utcnow() + datetime.timedelta(days=trial_days)
     if token:
         subscription_params["source"] = token
